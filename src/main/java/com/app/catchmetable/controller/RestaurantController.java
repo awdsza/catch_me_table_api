@@ -8,10 +8,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,9 +24,14 @@ public class RestaurantController {
         return new ResponseEntity<>(new ResponseDto<>("입점신청이 완료되었습니다.",null), HttpStatus.CREATED);
     }
     @ExceptionHandler(value= IllegalArgumentException.class)
-    public Object methoodIllegalArgumentException(IllegalArgumentException exception){
-        String message = exception.getMessage();
+    public Object methoodIllegalArgumentException(IllegalArgumentException ex){
+        String message = ex.getMessage();
         return new ResponseEntity<>(new ResponseDto<>(message,null),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Object methodMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        ObjectError objectError = ex.getBindingResult().getAllErrors().get(0);
+        return new ResponseEntity<>(new ResponseDto<>(objectError.getDefaultMessage(),null),HttpStatus.BAD_REQUEST);
+    }
 }

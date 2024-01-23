@@ -4,15 +4,10 @@ import com.app.catchmetable.domain.EnterShopType;
 import com.app.catchmetable.domain.FoodCategory;
 import com.app.catchmetable.domain.RestaurantFoodCategory;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
-
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,29 +26,39 @@ public class RestaurantRegistRequestDto {
 
 
     private List<String> restaurantFoodCategoryList = new ArrayList<>();
-    @Min(0)
+
+
     private int foodMinPrice;
     private int foodMaxPrice;
+    private int restaurantLimitPeople;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime openTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @NotBlank(message="오픈시간 입력은 필수입니다.")
+    private String openTime;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime closeTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @NotBlank(message="마감시간 입력은 필수입니다.")
+    private String closeTime;
 
     private boolean hasBreakTime;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime breakStartTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    private String breakStartTime;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime breakEndTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    private String breakEndTime;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime waitReservationStartTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    private String waitReservationStartTime;
 
     @JsonFormat(pattern = "HH:mm")
-    private LocalTime waitReservationEndTime;
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    private String waitReservationEndTime;
 
     private int waitReservationMinLimitPeople;
     private int waitReservationMaxLimitPeople;
@@ -64,7 +69,6 @@ public class RestaurantRegistRequestDto {
     private int reservationHourInterval;
     private int reservationMinuteInterval;
 
-    @Min(0)
     private int waitAmLimitTeam;
     private int waitPmLimitTeam;
 

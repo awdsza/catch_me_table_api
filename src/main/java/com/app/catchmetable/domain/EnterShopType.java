@@ -2,6 +2,7 @@ package com.app.catchmetable.domain;
 
 import lombok.Getter;
 
+@Getter
 public enum EnterShopType {
     RESERVATION("예약"),WAITING("웨이팅");
 

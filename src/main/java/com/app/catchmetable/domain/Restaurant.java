@@ -4,6 +4,7 @@ import com.app.catchmetable.dto.RestaurantRegistRequestDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +41,9 @@ public class Restaurant {
     private int foodMinPrice;
     @Column(name="food_max_price")
     private int foodMaxPrice;
+
+    @Column(name="restaurant_limit_people")
+    private int restaurantLimitPeople;
 
     @Column(name="open_time")
     private LocalTime openTime;
@@ -93,24 +97,40 @@ public class Restaurant {
         restaurant.setRestaurantTelephoneNumber(dto.getRestaurantTelephoneNumber());
         restaurant.setRestaurantIntroduce(dto.getRestaurantIntroduce());
 
-
-
         restaurant.setFoodMinPrice(dto.getFoodMinPrice());
         restaurant.setFoodMinPrice(dto.getFoodMaxPrice());
+        restaurant.setRestaurantLimitPeople(dto.getRestaurantLimitPeople());
 
-        restaurant.setOpenTime(dto.getOpenTime());
-        restaurant.setCloseTime(dto.getCloseTime());
+        String openTime = dto.getOpenTime();
+        String closeTime = dto.getCloseTime();
+        restaurant.setOpenTime(LocalTime.parse(openTime));
+        restaurant.setCloseTime(LocalTime.parse(closeTime));
 
         restaurant.setHasBreakTime(dto.isHasBreakTime());
-        restaurant.setBreakStartTime(dto.getBreakStartTime());
-        restaurant.setBreakEndTime(dto.getBreakEndTime());
+        String breakStartTime = dto.getBreakStartTime();
+        String breakEndTime = dto.getBreakEndTime();
+        if(dto.isHasBreakTime() && ( breakStartTime != null && breakEndTime != null && !breakStartTime.isBlank() && !breakEndTime.isBlank())){
+            restaurant.setBreakStartTime(LocalTime.parse(breakStartTime));
+            restaurant.setBreakEndTime(LocalTime.parse(breakEndTime));
+        }
 
-        restaurant.setWaitReservationStartTime(dto.getWaitReservationStartTime());
-        restaurant.setWaitReservationEndTime(dto.getWaitReservationEndTime());
+        String waitReservationStartTime = dto.getWaitReservationStartTime();
+        String waitReservationEndTime = dto.getWaitReservationEndTime();
+
+        restaurant.setWaitReservationStartTime(LocalTime.parse( waitReservationStartTime == null || waitReservationStartTime.isBlank() ? openTime:waitReservationStartTime));
+        restaurant.setWaitReservationEndTime(LocalTime.parse(waitReservationEndTime == null || waitReservationEndTime.isBlank() ? closeTime : waitReservationEndTime));
 
         restaurant.setWaitReservationMinLimitPeople(dto.getWaitReservationMinLimitPeople());
         restaurant.setWaitReservationMaxLimitPeople(dto.getWaitReservationMaxLimitPeople());
-
+        for(EnterShopType value : EnterShopType.values()){
+            if(value.name().equals(dto.getEnterShopType())){
+                restaurant.setEnterShopType(value);
+                break;
+            }
+        }
+        if(restaurant.getEnterShopType() == null){
+            throw new IllegalArgumentException("잘못된 레스토랑 유형의 값이 들어갔습니다.");
+        }
         if(restaurant.getEnterShopType() == EnterShopType.RESERVATION){
             restaurant.setReservationHourInterval(dto.getReservationHourInterval());
             restaurant.setReservationMinuteInterval(dto.getReservationMinuteInterval());
