@@ -8,6 +8,8 @@ import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,12 @@ public class RestaurantRegistRequestDto {
 
     @NotBlank(message = "사업자번호는 필수입니다.")
     private String restaurantNumber;
+
+    @NotBlank(message="비밀번호는 필수입니다.")
+    //@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]{8,}$")
+//    @Length(min = 8, max = 10)
+    private String userPW;
+
     @NotBlank(message = "가게 이름은 필수입니다.")
     private String restaurantName;
     @NotBlank(message = "가게 주소는 필수입니다.")
