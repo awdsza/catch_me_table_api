@@ -71,8 +71,7 @@ public class RestaurantRegistRequestDto {
     private int waitReservationMinLimitPeople;
     private int waitReservationMaxLimitPeople;
 
-    @NotBlank(message = "입점 구분값을 선택해주세요.(실시간웨이팅, 예약)")
-    private String enterShopType;
+    private EnterShopType enterShopType;
 
     private int reservationHourInterval;
     private int reservationMinuteInterval;
