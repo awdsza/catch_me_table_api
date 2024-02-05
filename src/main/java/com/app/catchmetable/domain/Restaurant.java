@@ -124,16 +124,7 @@ public class Restaurant extends User{
         LocalTime openTime = LocalTime.parse(dto.getOpenTime());
         LocalTime closeTime = LocalTime.parse(dto.getCloseTime());
 
-        EnterShopType shopType= null;
-        for(EnterShopType value : EnterShopType.values()){
-            if(value.name().equals(dto.getEnterShopType())){
-                shopType = value;
-                break;
-            }
-        }
-        if(shopType == null){
-            throw new IllegalArgumentException("잘못된 레스토랑 유형의 값이 들어갔습니다.");
-        }
+        EnterShopType shopType = dto.getEnterShopType();
         String waitReservationStartTimeStr = dto.getWaitReservationStartTime();
         LocalTime waitReservationStartTime = waitReservationStartTimeStr == null || waitReservationStartTimeStr.isBlank() ? openTime : LocalTime.parse(waitReservationStartTimeStr);
         String waitReservationEndTimeStr = dto.getWaitReservationEndTime();
