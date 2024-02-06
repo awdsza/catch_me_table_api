@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/restaurant")
+@RequestMapping("/restaurants")
 public class RestaurantController {
     final private RestaurantService service;
 
@@ -32,7 +32,7 @@ public class RestaurantController {
         Restaurant restaurant = service.login(loginDto);
         LoginSuccessDto successDto = LoginSuccessDto.createSuccessDto(restaurant);
         HttpSession session = request.getSession();
-        session.setAttribute("userID",restaurant.getUserId());
+        session.setAttribute("loginID",restaurant.getUserId());
         return new ResponseEntity<>(new ResponseDto<>("로그인 되었습니다.",successDto), HttpStatus.OK);
     }
 
