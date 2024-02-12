@@ -1,5 +1,6 @@
 package com.app.catchmetable.dto;
 
+import com.app.catchmetable.domain.CloseState;
 import com.app.catchmetable.domain.EnterShopType;
 import com.app.catchmetable.domain.FoodCategory;
 import com.app.catchmetable.domain.RestaurantFoodCategory;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class RestaurantRegistRequestDto {
+public class RestaurantRequestDto {
 
     @NotBlank(message = "사업자번호는 필수입니다.")
     private String restaurantNumber;
@@ -32,13 +33,13 @@ public class RestaurantRegistRequestDto {
     private String restaurantTelephoneNumber;
     private String restaurantIntroduce;
 
-
+    private CloseState closeState;
     private List<String> restaurantFoodCategoryList = new ArrayList<>();
 
 
-    private int foodMinPrice;
-    private int foodMaxPrice;
-    private int restaurantLimitPeople;
+    private Integer foodMinPrice;
+    private Integer foodMaxPrice;
+    private Integer restaurantLimitPeople;
 
     @JsonFormat(pattern = "HH:mm")
     @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
@@ -50,7 +51,7 @@ public class RestaurantRegistRequestDto {
     @NotBlank(message="마감시간 입력은 필수입니다.")
     private String closeTime;
 
-    private boolean hasBreakTime;
+    private Boolean hasBreakTime;
 
     @JsonFormat(pattern = "HH:mm")
     @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
@@ -68,16 +69,16 @@ public class RestaurantRegistRequestDto {
     @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
     private String waitReservationEndTime;
 
-    private int waitReservationMinLimitPeople;
-    private int waitReservationMaxLimitPeople;
+    private Integer waitReservationMinLimitPeople;
+    private Integer waitReservationMaxLimitPeople;
 
     private EnterShopType enterShopType;
 
-    private int reservationHourInterval;
-    private int reservationMinuteInterval;
+    private Integer reservationHourInterval;
+    private Integer reservationMinuteInterval;
 
-    private int waitAmLimitTeam;
-    private int waitPmLimitTeam;
+    private Integer waitAmLimitTeam;
+    private Integer waitPmLimitTeam;
 
 
 }
