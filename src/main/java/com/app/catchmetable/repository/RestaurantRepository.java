@@ -20,14 +20,16 @@ public class RestaurantRepository {
     public void save(Restaurant restaurant){
         entityManager.persist(restaurant);
     }
-    public List<User> isDuplicateUser(String userID){
+    public int isDuplicateUser(String userID){
         return entityManager.createQuery("SELECT u FROM User u where u.userId=:userID",User.class)
                 .setParameter("userID",userID)
-                .getResultList();
+                .getResultList().size();
     }
-    public List<Restaurant> findRestaurant(LoginDto loginDto){
-        TypedQuery<Restaurant> query = entityManager.createQuery("select r from Restaurant r LEFT JOIN " +
-                "RestaurantFoodCategory rfx on r.id = rfx.id where r.userId=:userID AND r.userPw=:userPW", Restaurant.class);
+    public Restaurant findRestaurant(Long restuarant_id){
+        return entityManager.find(Restaurant.class,restuarant_id);
+    }
+    public List<Restaurant> login(LoginDto loginDto){
+        TypedQuery<Restaurant> query = entityManager.createQuery("select r from Restaurant r  where r.userId=:userID AND r.userPw=:userPW AND r.closeState='N'", Restaurant.class);
         query
                 .setParameter("userID", loginDto.getUserId())
                 .setParameter("userPW", loginDto.getUserPw());

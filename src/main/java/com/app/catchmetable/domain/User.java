@@ -28,7 +28,7 @@ public abstract class User extends BaseEntity {
     private UserState isUse;
 
 
-    public User(String userId, String userPw, UserState isUse) {
+    protected User(String userId, String userPw, UserState isUse) {
         this.userId = userId;
         this.userPw = userPw;
         this.isUse = isUse;
