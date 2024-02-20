@@ -58,5 +58,10 @@ public class RestaurantService {
 
         Restaurant.updateRestaurant(restaurant,updateDto);
     }
+    @Transactional
+    public void deleteRestaurant(Long restaurant_id){
+        Restaurant restaurant = findRestaurant(restaurant_id);
+        Restaurant.deleteRestaurant(restaurant);
+    }
 
 }

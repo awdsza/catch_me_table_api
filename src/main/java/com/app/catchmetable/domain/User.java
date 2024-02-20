@@ -33,4 +33,12 @@ public abstract class User extends BaseEntity {
         this.userPw = userPw;
         this.isUse = isUse;
     }
+    protected void deleteUser(User user){
+        user.isUse = UserState.N;
+        updateUser(user);
+    }
+    protected void updateUser(User user){
+        this.userPw = user.userPw;
+        this.isUse = user.isUse;
+    }
 }

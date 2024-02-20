@@ -27,8 +27,8 @@ public class RestaurantController {
         return new ResponseEntity<>(new ResponseDto<>("입점신청이 완료되었습니다.",null), HttpStatus.CREATED);
     }
     @GetMapping("/{restaurant_id}")
-    public ResponseEntity<?> getRestaurant(@PathVariable(name="restaurant_id") Long restaurant_id){
-        Restaurant restaurant = service.findRestaurant(restaurant_id);
+    public ResponseEntity<?> getRestaurant(@PathVariable(name="restaurant_id") Long restaurantId){
+        Restaurant restaurant = service.findRestaurant(restaurantId);
         RestaurantDto restaurantInfoDto = RestaurantDto.createSuccessDto(restaurant);
         return new ResponseEntity<>(new ResponseDto<>("조회 되었습니다.",restaurantInfoDto), HttpStatus.OK);
     }
@@ -42,9 +42,16 @@ public class RestaurantController {
     }
 
     @PutMapping("/{restaurant_id}")
-    public ResponseEntity<?> putRestaurant(@PathVariable(name="restaurant_id") Long restaurant_id, @Valid @RequestBody RestaurantUpdateRequestDto updateDto){
-        service.updateRestaurant(restaurant_id,updateDto);
+    public ResponseEntity<?> putRestaurant(@PathVariable(name="restaurant_id") Long restaurantId, @Valid @RequestBody RestaurantUpdateRequestDto updateDto){
+        service.updateRestaurant(restaurantId,updateDto);
         return new ResponseEntity<>(new ResponseDto<>("변경이 완료되었습니다.",null), HttpStatus.OK);
+    }
+    @DeleteMapping("/{restaurant_id}")
+    public ResponseEntity<?> deleteRestaurant(@PathVariable(name="restaurant_id") Long restaurantId, HttpServletRequest request){
+        service.deleteRestaurant(restaurantId);
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return new ResponseEntity<>(new ResponseDto<>("삭제가 완료되었습니다.",null), HttpStatus.OK);
     }
 
     @ExceptionHandler(value= IllegalArgumentException.class)

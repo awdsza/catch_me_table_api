@@ -123,6 +123,10 @@ public class Restaurant extends User{
         this.waitReservationMaxLimitPeople = waitReservationMaxLimitPeople;
         this.enterShopType = enterShopType;
     }
+    static public void deleteRestaurant(Restaurant restaurant){
+        restaurant.deleteUser(restaurant);
+    }
+
     static public void updateRestaurant(Restaurant restaurant, RestaurantUpdateRequestDto dto){
         if(!StringUtils.isBlank(dto.getRestaurantName())){
             restaurant.setRestaurantName(dto.getRestaurantName());
