@@ -29,20 +29,20 @@ public class RestaurantController {
     @GetMapping("/{restaurant_id}")
     public ResponseEntity<?> getRestaurant(@PathVariable(name="restaurant_id") Long restaurant_id){
         Restaurant restaurant = service.findRestaurant(restaurant_id);
-        RestaurantInfoDto restaurantInfoDto = RestaurantInfoDto.createSuccessDto(restaurant);
+        RestaurantDto restaurantInfoDto = RestaurantDto.createSuccessDto(restaurant);
         return new ResponseEntity<>(new ResponseDto<>("조회 되었습니다.",restaurantInfoDto), HttpStatus.OK);
     }
     @PostMapping("/login")
     public ResponseEntity<?> loginRestaurant(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request){
         Restaurant restaurant = service.login(loginDto);
-        RestaurantInfoDto restaurantInfoDto = RestaurantInfoDto.createSuccessDto(restaurant);
+        RestaurantDto restaurantInfoDto = RestaurantDto.createSuccessDto(restaurant);
         HttpSession session = request.getSession();
         session.setAttribute("loginID",restaurant.getUserId());
         return new ResponseEntity<>(new ResponseDto<>("로그인 되었습니다.",restaurantInfoDto), HttpStatus.OK);
     }
 
     @PutMapping("/{restaurant_id}")
-    public ResponseEntity<?> putRestaurant(@PathVariable(name="restaurant_id") Long restaurant_id, @Valid @RequestBody RestaurantRequestDto updateDto){
+    public ResponseEntity<?> putRestaurant(@PathVariable(name="restaurant_id") Long restaurant_id, @Valid @RequestBody RestaurantUpdateRequestDto updateDto){
         service.updateRestaurant(restaurant_id,updateDto);
         return new ResponseEntity<>(new ResponseDto<>("변경이 완료되었습니다.",null), HttpStatus.OK);
     }

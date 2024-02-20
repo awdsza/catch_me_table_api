@@ -9,7 +9,7 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
-public class RestaurantInfoDto {
+public class RestaurantDto {
     private String userId;
     private String restaurantNumber;
     private String restaurantName;
@@ -42,7 +42,7 @@ public class RestaurantInfoDto {
     private int waitAmLimitTeam;
     private int waitPmLimitTeam;
 
-    private RestaurantInfoDto(Restaurant restaurant) {
+    private RestaurantDto(Restaurant restaurant) {
         this.userId = restaurant.getUserId();
         this.restaurantNumber = restaurant.getRestaurantNumber();
         this.restaurantName = restaurant.getRestaurantName();
@@ -69,8 +69,8 @@ public class RestaurantInfoDto {
 
     }
 
-    public static RestaurantInfoDto createSuccessDto(Restaurant restaurant){
+    public static RestaurantDto createSuccessDto(Restaurant restaurant){
 
-        return new RestaurantInfoDto(restaurant);
+        return new RestaurantDto(restaurant);
     }
 }

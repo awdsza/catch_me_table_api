@@ -1,6 +1,8 @@
 package com.app.catchmetable.domain;
 
+import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
 import com.app.catchmetable.dto.RestaurantRequestDto;
+import com.app.catchmetable.utils.StringUtils;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,7 +31,7 @@ public class Restaurant extends User{
     @Enumerated(EnumType.STRING)
     private CloseState closeState;
 
-    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestaurantFoodCategory> restaurantFoodCategoryList = new ArrayList<>();
 
     @Column(name="food_min_price")
@@ -88,7 +90,6 @@ public class Restaurant extends User{
 
 
     public void addRestaurantFoodCategory(List<String> categoryList){
-
         for(String categoryString:categoryList){
             for(FoodCategory value : FoodCategory.values()){
                 if(value.name().equals(categoryString)){
@@ -122,30 +123,29 @@ public class Restaurant extends User{
         this.waitReservationMaxLimitPeople = waitReservationMaxLimitPeople;
         this.enterShopType = enterShopType;
     }
-    static public void updateRestaurant(Restaurant restaurant, RestaurantRequestDto dto){
-        if(!dto.getRestaurantName().isBlank()){
+    static public void updateRestaurant(Restaurant restaurant, RestaurantUpdateRequestDto dto){
+        if(!StringUtils.isBlank(dto.getRestaurantName())){
             restaurant.setRestaurantName(dto.getRestaurantName());
         }
-        if(!dto.getRestaurantAddress().isBlank()){
+        if(!StringUtils.isBlank(dto.getRestaurantAddress())){
             restaurant.setRestaurantAddress(dto.getRestaurantAddress());
         }
-        if(!dto.getRestaurantIntroduce().isBlank()){
+        if(!StringUtils.isBlank(dto.getRestaurantIntroduce())){
             restaurant.setRestaurantIntroduce(dto.getRestaurantIntroduce());
         }
-        if(!dto.getRestaurantNumber().isBlank()){
-            restaurant.setRestaurantNumber(dto.getRestaurantNumber());
-        }
 
-        if(!dto.getOpenTime().isBlank()){
+        if(!StringUtils.isBlank(dto.getOpenTime())){
             restaurant.setOpenTime(LocalTime.parse(dto.getOpenTime()));
         }
-        if(!dto.getCloseTime().isBlank()) {
+        if(!StringUtils.isBlank(dto.getCloseTime())){
             restaurant.setCloseTime(LocalTime.parse(dto.getCloseTime()));
         }
-        restaurant.setCloseState(dto.getCloseState());
-
-//        @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL)
-//        private List<RestaurantFoodCategory> restaurantFoodCategoryList = new ArrayList<>();
+        restaurant.setCloseState(dto.getCloseState() == null ? CloseState.N : dto.getCloseState() );
+        if(dto.getRestaurantFoodCategoryList().size() > 0){
+            List<RestaurantFoodCategory> restaurantFoodCategoryList = restaurant.getRestaurantFoodCategoryList();
+            restaurantFoodCategoryList.clear();
+            restaurant.addRestaurantFoodCategory(dto.getRestaurantFoodCategoryList());
+        }
         if(dto.getFoodMinPrice() != null){
             restaurant.setFoodMinPrice(dto.getFoodMinPrice());
         }
@@ -158,29 +158,21 @@ public class Restaurant extends User{
         if(dto.getHasBreakTime() != null){
             restaurant.setHasBreakTime(dto.getHasBreakTime());
         }
-        if(!dto.getBreakStartTime().isBlank()){
+        if(!StringUtils.isBlank(dto.getBreakStartTime())){
             restaurant.setBreakStartTime(LocalTime.parse(dto.getBreakStartTime()));
         }
-        if(!dto.getBreakEndTime().isBlank()) {
+        if(!StringUtils.isBlank(dto.getBreakEndTime())){
             restaurant.setBreakEndTime(LocalTime.parse(dto.getBreakEndTime()));
         }
         if(dto.getEnterShopType() != null){
             restaurant.setEnterShopType(dto.getEnterShopType());
         }
-        if(dto.getWaitReservationStartTime()!=null){
+        if(!StringUtils.isBlank(dto.getWaitReservationStartTime())){
             restaurant.setWaitReservationStartTime(LocalTime.parse(dto.getWaitReservationStartTime()));
         }
-        if(dto.getWaitReservationEndTime()!=null) {
+        if(!StringUtils.isBlank(dto.getWaitReservationEndTime())){
             restaurant.setWaitReservationEndTime(LocalTime.parse(dto.getWaitReservationEndTime()));
         }
-        if(dto.getWaitReservationMinLimitPeople() != null){
-            restaurant.setWaitReservationMinLimitPeople(dto.getWaitReservationMinLimitPeople());
-        }
-        if(dto.getWaitReservationMaxLimitPeople() != null){
-            restaurant.setWaitReservationMaxLimitPeople(dto.getWaitReservationMaxLimitPeople());
-        }
-
-
         if(dto.getWaitReservationMinLimitPeople() != null){
             restaurant.setWaitReservationMinLimitPeople(dto.getWaitReservationMinLimitPeople());
         }
@@ -210,14 +202,14 @@ public class Restaurant extends User{
 
         EnterShopType shopType = dto.getEnterShopType();
         String waitReservationStartTimeStr = dto.getWaitReservationStartTime();
-        LocalTime waitReservationStartTime = waitReservationStartTimeStr == null || waitReservationStartTimeStr.isBlank() ? openTime : LocalTime.parse(waitReservationStartTimeStr);
+        LocalTime waitReservationStartTime = StringUtils.isBlank(waitReservationStartTimeStr) ? openTime : LocalTime.parse(waitReservationStartTimeStr);
         String waitReservationEndTimeStr = dto.getWaitReservationEndTime();
-        LocalTime waitReservationEndTime = waitReservationEndTimeStr == null || waitReservationEndTimeStr.isBlank() ? closeTime : LocalTime.parse(waitReservationEndTimeStr);
+        LocalTime waitReservationEndTime = StringUtils.isBlank(waitReservationEndTimeStr) ? closeTime : LocalTime.parse(waitReservationEndTimeStr);
         Boolean hasBreakTime = dto.getHasBreakTime();
 
         Restaurant restaurant = new Restaurant(dto.getRestaurantNumber(), dto.getUserPW(), dto.getRestaurantName(), dto.getRestaurantAddress(), dto.getRestaurantTelephoneNumber(), dto.getRestaurantIntroduce(),
              dto.getHasBreakTime(), dto.getFoodMinPrice(), dto.getFoodMaxPrice(), dto.getRestaurantLimitPeople(), openTime, closeTime, waitReservationStartTime, waitReservationEndTime,dto.getWaitReservationMinLimitPeople(),dto.getWaitReservationMaxLimitPeople(), shopType);
-        if(hasBreakTime && ( dto.getBreakStartTime() != null && dto.getBreakEndTime() != null && !dto.getBreakStartTime().isBlank() && !dto.getBreakEndTime().isBlank())){
+        if(hasBreakTime && ( !StringUtils.isBlank(dto.getBreakStartTime()) && StringUtils.isBlank(dto.getBreakStartTime()))){
 
             restaurant.setBreakStartTime(LocalTime.parse(dto.getBreakStartTime()));
             restaurant.setBreakEndTime(LocalTime.parse(dto.getBreakEndTime()));

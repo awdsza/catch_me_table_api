@@ -2,7 +2,6 @@ package com.app.catchmetable.domain;
 
 import lombok.Getter;
 
-import java.time.chrono.JapaneseEra;
 
 @Getter
 public enum FoodCategory {
@@ -14,7 +13,7 @@ public enum FoodCategory {
     BRUNCH(null),
     DESSERT(null),
     ETC(null),
-    OMACASE(JAPANESE),
+    OMAKASE(JAPANESE),
     SUSHI(JAPANESE),
     KATSU(JAPANESE),
     RAMEN(JAPANESE),

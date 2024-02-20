@@ -1,7 +1,10 @@
 package com.app.catchmetable.service;
 
+import com.app.catchmetable.domain.FoodCategory;
 import com.app.catchmetable.domain.Restaurant;
+import com.app.catchmetable.domain.RestaurantFoodCategory;
 import com.app.catchmetable.dto.LoginDto;
+import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
 import com.app.catchmetable.dto.RestaurantRequestDto;
 import com.app.catchmetable.exception.DuplicateRestaurantNumberException;
 import com.app.catchmetable.exception.LoginFailException;
@@ -11,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -47,13 +51,12 @@ public class RestaurantService {
         }
         return restaurant;
     }
-    @Transactional
-    public void updateRestaurant(Long restaurant_id, RestaurantRequestDto updateDto){
-        Restaurant restaurant = findRestaurant(restaurant_id);
-        Restaurant.updateRestaurant(restaurant,updateDto);
 
-        if(updateDto.getRestaurantFoodCategoryList() != null && updateDto.getRestaurantFoodCategoryList().size() > 0){
-            restaurant.addRestaurantFoodCategory(updateDto.getRestaurantFoodCategoryList());
-        }
+    @Transactional
+    public void updateRestaurant(Long restaurant_id, RestaurantUpdateRequestDto updateDto){
+        Restaurant restaurant = findRestaurant(restaurant_id);
+
+        Restaurant.updateRestaurant(restaurant,updateDto);
     }
+
 }

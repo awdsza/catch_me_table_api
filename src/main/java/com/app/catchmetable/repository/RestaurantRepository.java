@@ -35,4 +35,5 @@ public class RestaurantRepository {
                 .setParameter("userPW", loginDto.getUserPw());
         return query.getResultList();
     }
+
 }
