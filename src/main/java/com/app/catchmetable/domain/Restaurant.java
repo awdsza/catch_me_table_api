@@ -213,7 +213,7 @@ public class Restaurant extends User{
 
         Restaurant restaurant = new Restaurant(dto.getRestaurantNumber(), dto.getUserPW(), dto.getRestaurantName(), dto.getRestaurantAddress(), dto.getRestaurantTelephoneNumber(), dto.getRestaurantIntroduce(),
              dto.getHasBreakTime(), dto.getFoodMinPrice(), dto.getFoodMaxPrice(), dto.getRestaurantLimitPeople(), openTime, closeTime, waitReservationStartTime, waitReservationEndTime,dto.getWaitReservationMinLimitPeople(),dto.getWaitReservationMaxLimitPeople(), shopType);
-        if(hasBreakTime && ( !StringUtils.isBlank(dto.getBreakStartTime()) && StringUtils.isBlank(dto.getBreakStartTime()))){
+        if(hasBreakTime && ( !StringUtils.isBlank(dto.getBreakStartTime()) && !StringUtils.isBlank(dto.getBreakEndTime()))){
 
             restaurant.setBreakStartTime(LocalTime.parse(dto.getBreakStartTime()));
             restaurant.setBreakEndTime(LocalTime.parse(dto.getBreakEndTime()));
