@@ -24,15 +24,16 @@ public class RestaurantService {
     final private RestaurantRepository repository;
 
     @Transactional
-    public void createRestaurant(RestaurantRequestDto registDto){
+    public Long createRestaurant(RestaurantRequestDto registDto){
         if(isDuplicateID(registDto.getRestaurantNumber())){
             throw new DuplicateRestaurantNumberException("중복된 레스토랑 입니다.");
         }
         Restaurant restaurant = Restaurant.createRestaurant(registDto);//레스토랑 추가
-        repository.save(restaurant);
+        Long id = repository.save(restaurant);
         restaurant.addRestaurantFoodCategory(registDto.getRestaurantFoodCategoryList());//레스토랑에 음식 카테고리 추가.
+        return id;
     }
-    private boolean isDuplicateID(String restaurantNumber){
+    public boolean isDuplicateID(String restaurantNumber){
         return repository.isDuplicateUser(restaurantNumber) != 0;
     }
 

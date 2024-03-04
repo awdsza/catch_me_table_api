@@ -17,8 +17,9 @@ public class RestaurantRepository {
 
     private final EntityManager entityManager;
 
-    public void save(Restaurant restaurant){
+    public Long save(Restaurant restaurant){
         entityManager.persist(restaurant);
+        return restaurant.getId();
     }
     public int isDuplicateUser(String userID){
         return entityManager.createQuery("SELECT u FROM User u where u.userId=:userID",User.class)
