@@ -17,11 +17,11 @@ public class AuthcheckInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         String requestURI = request.getRequestURI();
         String requestMethod = request.getMethod();
-        HttpSession session = request.getSession(/**/);
+        HttpSession session = request.getSession();
         if((requestURI.contains("restaurants") && requestMethod.equalsIgnoreCase("POST"))
         || (requestURI.contains("members") && requestMethod.equalsIgnoreCase("POST"))){
             return true;
         }
-        return session.getAttribute("loginID") != null;
+        return session.getAttribute("userInfo") != null;
     }
 }
