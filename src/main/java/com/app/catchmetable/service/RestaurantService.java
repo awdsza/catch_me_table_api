@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RestaurantService {
 
-    final private RestaurantRepository repository;
+    final private RestaurantRepository restaurantRepository;
 
     @Transactional
     public Long createRestaurant(RestaurantRequestDto registDto){
@@ -29,24 +29,24 @@ public class RestaurantService {
             throw new DuplicateRestaurantNumberException("중복된 레스토랑 입니다.");
         }
         Restaurant restaurant = Restaurant.createRestaurant(registDto);//레스토랑 추가
-        Long id = repository.save(restaurant);
+        Long id = restaurantRepository.save(restaurant);
         restaurant.addRestaurantFoodCategory(registDto.getRestaurantFoodCategoryList());//레스토랑에 음식 카테고리 추가.
         return id;
     }
     public boolean isDuplicateID(String restaurantNumber){
-        return repository.isDuplicateUser(restaurantNumber) != 0;
+        return restaurantRepository.isDuplicateUser(restaurantNumber) != 0;
     }
 
     public Restaurant login(LoginDto loginDto){
 
-        List<Restaurant> result =  repository.login(loginDto);
+        List<Restaurant> result =  restaurantRepository.login(loginDto);
         if(result == null || result.isEmpty()){
             throw new LoginFailException("사용자가 없거나 로그인 정보가 틀린 대상입니다.");
         }
         return result.get(0);
     }
     public Restaurant findRestaurant(Long restaurant_id){
-        Restaurant restaurant = repository.findRestaurant(restaurant_id);
+        Restaurant restaurant = restaurantRepository.findRestaurant(restaurant_id);
         if(restaurant == null){
             throw new NotExistRestaurantException("해당 ID를 가진 레스토랑이 존재하지않습니다.");
         }
