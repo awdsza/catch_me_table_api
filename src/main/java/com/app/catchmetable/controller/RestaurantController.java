@@ -25,7 +25,7 @@ public class RestaurantController {
     @PostMapping
     public ResponseEntity<?> postRestaurant(@Valid @RequestBody RestaurantRequestDto registDto){
         restaurantService.createRestaurant(registDto);
-        return new ResponseEntity<>(new ResponseDto<>("입점신청이 완료되었습니다.",null), HttpStatus.CREATED);
+        return new ResponseEntity<>(new ResponseDto<>("입점신청이 완료되었습니다."), HttpStatus.CREATED);
     }
     @GetMapping("/{restaurant_id}")
     public ResponseEntity<?> getRestaurant(@PathVariable(name="restaurant_id") Long restaurantId){
@@ -35,8 +35,7 @@ public class RestaurantController {
     }
     @PostMapping("/login")
     public ResponseEntity<?> loginRestaurant(@Valid @RequestBody LoginDto loginDto, HttpServletRequest request){
-        Restaurant restaurant = restaurantService.login(loginDto);
-        RestaurantDto restaurantInfoDto = RestaurantDto.createSuccessDto(restaurant);
+        RestaurantDto restaurantInfoDto = restaurantService.login(loginDto);
         HttpSession session = request.getSession();
         session.setAttribute("userInfo",restaurantInfoDto);
 
@@ -46,14 +45,14 @@ public class RestaurantController {
     @PutMapping("/{restaurant_id}")
     public ResponseEntity<?> putRestaurant(@PathVariable(name="restaurant_id") Long restaurantId, @Valid @RequestBody RestaurantUpdateRequestDto updateDto){
         restaurantService.updateRestaurant(restaurantId,updateDto);
-        return new ResponseEntity<>(new ResponseDto<>("변경이 완료되었습니다.",null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>("변경이 완료되었습니다."), HttpStatus.OK);
     }
     @DeleteMapping("/{restaurant_id}")
     public ResponseEntity<?> deleteRestaurant(@PathVariable(name="restaurant_id") Long restaurantId, HttpServletRequest request){
         restaurantService.deleteRestaurant(restaurantId);
         HttpSession session = request.getSession();
         session.invalidate();
-        return new ResponseEntity<>(new ResponseDto<>("삭제가 완료되었습니다.",null), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseDto<>("삭제가 완료되었습니다."), HttpStatus.OK);
     }
 
     @ExceptionHandler(value= IllegalArgumentException.class)
