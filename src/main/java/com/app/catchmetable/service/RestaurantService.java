@@ -4,6 +4,7 @@ import com.app.catchmetable.domain.FoodCategory;
 import com.app.catchmetable.domain.Restaurant;
 import com.app.catchmetable.domain.RestaurantFoodCategory;
 import com.app.catchmetable.dto.LoginDto;
+import com.app.catchmetable.dto.RestaurantDto;
 import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
 import com.app.catchmetable.dto.RestaurantRequestDto;
 import com.app.catchmetable.exception.DuplicateRestaurantNumberException;
@@ -37,13 +38,13 @@ public class RestaurantService {
         return restaurantRepository.isDuplicateUser(restaurantNumber) != 0;
     }
 
-    public Restaurant login(LoginDto loginDto){
+    public RestaurantDto login(LoginDto loginDto){
 
         List<Restaurant> result =  restaurantRepository.login(loginDto);
         if(result == null || result.isEmpty()){
             throw new LoginFailException("사용자가 없거나 로그인 정보가 틀린 대상입니다.");
         }
-        return result.get(0);
+        return RestaurantDto.createSuccessDto(result.get(0));
     }
     public Restaurant findRestaurant(Long restaurant_id){
         Restaurant restaurant = restaurantRepository.findRestaurant(restaurant_id);

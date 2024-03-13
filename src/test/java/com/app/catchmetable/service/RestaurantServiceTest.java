@@ -2,6 +2,7 @@ package com.app.catchmetable.service;
 
 import com.app.catchmetable.domain.*;
 import com.app.catchmetable.dto.LoginDto;
+import com.app.catchmetable.dto.RestaurantDto;
 import com.app.catchmetable.dto.RestaurantRequestDto;
 import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
 import jakarta.transaction.Transactional;
@@ -74,7 +75,7 @@ class RestaurantServiceTest {
         //given
         LoginDto loginDto = new LoginDto(    "5521300286","1234");
         //when
-        Restaurant login = restaurantService.login(loginDto);
+        RestaurantDto login = restaurantService.login(loginDto);
         //then
         assertNotNull(login);
     }

@@ -5,11 +5,13 @@ import com.app.catchmetable.domain.Restaurant;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
 import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access=AccessLevel.PRIVATE)
-public class RestaurantDto {
+public class RestaurantDto implements Serializable {
     private String userId;
     private String restaurantNumber;
     private String restaurantName;

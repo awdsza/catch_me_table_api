@@ -44,31 +44,31 @@ public class RestaurantRequestDto {
     private Integer restaurantLimitPeople;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "오픈 시간은 시:분 방식으로 입력해주세요.")
     @NotBlank(message="오픈시간 입력은 필수입니다.")
     private String openTime;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "마감 시간은 시:분 방식으로 입력해주세요.")
     @NotBlank(message="마감시간 입력은 필수입니다.")
     private String closeTime;
 
     private Boolean hasBreakTime;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "브레이크타임 시작 시간은 시:분 방식으로 입력해주세요.")
     private String breakStartTime;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "브레이크타임 종료 시간은 시:분 방식으로 입력해주세요.")
     private String breakEndTime;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "대기(예약) 가능 시작 시간은 시:분 방식으로 입력해주세요.")
     private String waitReservationStartTime;
 
     @JsonFormat(pattern = "HH:mm")
-    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "시간은 시:분 방식으로 입력해주세요.")
+    @Pattern(regexp = "^(0[0-9]|1[0-9]|2[0-3]):(0[1-9]|[0-5][0-9])",message = "대기(예약) 가능 종료 시간은 시:분 방식으로 입력해주세요.")
     private String waitReservationEndTime;
 
     private Integer waitReservationMinLimitPeople;
