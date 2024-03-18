@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--설정 파일의 변경을 확인하여 갱신(60초) -->
+<configuration scan="true" scanPeriod="60 seconds">
+    <!-- Console 설정 -->
+    <!--로그의 출력 설정
+     ConsoleAppender: 콘솔 출력.
+     FileAppender: 파일 저장
+     -->
+<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+        <pattern>[LEVEL:%-5level] [PID:${PID:-}] [DATE:%d{yyyy-MM-dd HH:mm:ss}][THREAD:%thread] [%logger{0}:%line] - %msg%n</pattern>
+    </encoder>
+
+</appender>
+    <!-- root레벨 설정 -->
+    <root level="info">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <!--클래스별로 로깅 레벨 설정 시작 -->
+    <logger name="jdbc" level="OFF" additive="false">
+        <apppend-ref ref="STDOUT"/>
+    </logger>
+    <!--하이버네이트 SQL -->
+    <logger name="jdbc.sqlonly" level="INFO" additive="false">
+        <apppend-ref ref="STDOUT"/>
+    </logger>
+    <!--하이버네이트 SQL -->
+    <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" additive="false">
+        <apppend-ref ref="STDOUT"/>
+    </logger>
+    <logger name="org.hibernate.SQL" level="DEBUG" additive="false">
+        <apppend-ref ref="STDOUT"/>
+    </logger>
+
+    <!--클래스별로 로깅 레벨 설정 끝 -->
+
+</configuration>

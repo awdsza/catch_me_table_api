@@ -30,11 +30,10 @@ public class RestaurantRepository {
         return entityManager.find(Restaurant.class,restuarant_id);
     }
     public List<Restaurant> login(LoginDto loginDto){
-        TypedQuery<Restaurant> query = entityManager.createQuery("select r from Restaurant r  where r.userId=:userID AND r.userPw=:userPW AND r.isUse='Y'", Restaurant.class);
-        query
+        return entityManager.createQuery("select r from Restaurant r  where r.userId=:userID AND r.userPw=:userPW AND r.isUse='Y'", Restaurant.class)
                 .setParameter("userID", loginDto.getUserId())
-                .setParameter("userPW", loginDto.getUserPw());
-        return query.getResultList();
+                .setParameter("userPW", loginDto.getUserPw())
+                .getResultList();
     }
 
 }

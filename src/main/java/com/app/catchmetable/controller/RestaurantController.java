@@ -4,11 +4,13 @@ import com.app.catchmetable.domain.Restaurant;
 import com.app.catchmetable.dto.*;
 import com.app.catchmetable.exception.DuplicateRestaurantNumberException;
 import com.app.catchmetable.exception.LoginFailException;
+import com.app.catchmetable.exception.NotExistRestaurantException;
 import com.app.catchmetable.service.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.ObjectError;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/restaurants")
+@Slf4j
 public class RestaurantController {
 
     final private RestaurantService restaurantService;
@@ -72,6 +75,10 @@ public class RestaurantController {
     }
     @ExceptionHandler(value = DuplicateRestaurantNumberException.class)
     public Object methodDuplicateRestaurantNumberException(DuplicateRestaurantNumberException ex){
+        return new ResponseEntity<>(new FailResponseDto(ex.getMessage()),HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(value = NotExistRestaurantException.class)
+    public Object methodNotExistRestaurantException(NotExistRestaurantException ex){
         return new ResponseEntity<>(new FailResponseDto(ex.getMessage()),HttpStatus.BAD_REQUEST);
     }
 }
