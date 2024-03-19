@@ -111,9 +111,7 @@ public class Restaurant extends User{
         this.restaurantIntroduce = restaurantIntroduce;
         this.hasBreakTime = hasBreakTime;
         this.foodMinPrice = foodMinPrice;
-        if(foodMaxPrice != null){
-            this.foodMaxPrice = foodMaxPrice;
-        }
+        this.foodMaxPrice = foodMaxPrice;
         this.restaurantLimitPeople = restaurantLimitPeople;
         this.openTime = openTime;
         this.closeTime = closeTime;
