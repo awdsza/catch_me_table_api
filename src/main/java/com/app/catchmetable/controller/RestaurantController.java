@@ -58,6 +58,12 @@ public class RestaurantController {
         return new ResponseEntity<>(new ResponseDto<>("삭제가 완료되었습니다."), HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<?> logoutRestaurant(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return new ResponseEntity<>(new ResponseDto<>("로그아웃 되었습니다."), HttpStatus.OK);
+    }
     @ExceptionHandler(value= IllegalArgumentException.class)
     public Object methoodIllegalArgumentException(IllegalArgumentException ex){
         String message = ex.getMessage();
