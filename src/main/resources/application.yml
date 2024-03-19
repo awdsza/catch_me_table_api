@@ -1,8 +1,8 @@
 spring:
   profiles:
-    default: local
+    default: local # 기본 프로파일 위치 설정
   config:
-    import:
+    import: # Import 할 외부 설정 파일 목록
       - exclude.yml
   session:
     redis:

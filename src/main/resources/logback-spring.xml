@@ -25,9 +25,11 @@
         <apppend-ref ref="STDOUT"/>
     </logger>
     <!--하이버네이트 SQL -->
+    <!--  SQL Bind 할 변수 출력 관련  -->
     <logger name="org.hibernate.orm.jdbc.bind" level="TRACE" additive="false">
         <apppend-ref ref="STDOUT"/>
     </logger>
+    <!-- SQL 쿼리 출력   -->
     <logger name="org.hibernate.SQL" level="DEBUG" additive="false">
         <apppend-ref ref="STDOUT"/>
     </logger>

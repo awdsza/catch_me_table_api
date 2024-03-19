@@ -1,15 +1,15 @@
 spring:
   config:
     activate:
-      on-profile: local
-  datasource:
+      on-profile: local # 프로파일 설정값 설정
+  datasource: # db 설정(h2)
     url: jdbc:h2:tcp://localhost/~/cmt_api;Mode=MySQL
     username: sa
     password:
     driver-class-name: org.h2.Driver
-  jpa:
+  jpa: # Jpa 설정
     hibernate:
-      ddl-auto: none
+      ddl-auto: none # DDL 실행
     properties:
       hibernate:
         format_sql: true
