@@ -2,7 +2,7 @@ package com.app.catchmetable.controller;
 
 import com.app.catchmetable.domain.Restaurant;
 import com.app.catchmetable.dto.*;
-import com.app.catchmetable.exception.DuplicateRestaurantNumberException;
+import com.app.catchmetable.exception.DuplicateUserException;
 import com.app.catchmetable.exception.LoginFailException;
 import com.app.catchmetable.exception.NotExistRestaurantException;
 import com.app.catchmetable.service.RestaurantService;
@@ -79,8 +79,8 @@ public class RestaurantController {
     public Object methodLoginFailException(LoginFailException ex){
         return new ResponseEntity<>(new FailResponseDto(ex.getMessage()),HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(value = DuplicateRestaurantNumberException.class)
-    public Object methodDuplicateRestaurantNumberException(DuplicateRestaurantNumberException ex){
+    @ExceptionHandler(value = DuplicateUserException.class)
+    public Object methodDuplicateUserException(DuplicateUserException ex){
         return new ResponseEntity<>(new FailResponseDto(ex.getMessage()),HttpStatus.BAD_REQUEST);
     }
     @ExceptionHandler(value = NotExistRestaurantException.class)
