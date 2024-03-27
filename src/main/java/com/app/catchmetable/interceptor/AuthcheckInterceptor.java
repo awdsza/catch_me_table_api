@@ -22,7 +22,7 @@ public class AuthcheckInterceptor implements HandlerInterceptor {
         String requestMethod = request.getMethod();
         HttpSession session = request.getSession();
         if((requestURI.contains("restaurants") && requestMethod.equalsIgnoreCase("POST"))
-        || (requestURI.contains("members") && requestMethod.equalsIgnoreCase("POST"))){
+        || (requestURI.contains("customers") && requestMethod.equalsIgnoreCase("POST"))){
             return true;
         }
         return session.getAttribute("userInfo") != null;
