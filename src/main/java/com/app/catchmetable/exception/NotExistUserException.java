@@ -1,10 +1,10 @@
 package com.app.catchmetable.exception;
 
-public class NotExistRestaurantException extends RuntimeException{
-    public NotExistRestaurantException() {
+public class NotExistUserException extends RuntimeException{
+    public NotExistUserException() {
     }
 
-    public NotExistRestaurantException(String message) {
+    public NotExistUserException(String message) {
         super(message);
     }
 }

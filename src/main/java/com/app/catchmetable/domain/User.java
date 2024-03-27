@@ -41,4 +41,7 @@ public abstract class User extends BaseEntity {
         this.userPw = user.userPw;
         this.isUse = user.isUse;
     }
+    protected void updateUserPw(String userPw){
+        this.userPw = userPw;
+    }
 }
