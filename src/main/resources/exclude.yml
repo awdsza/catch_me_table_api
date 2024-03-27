@@ -1,0 +1,4 @@
+external:
+  interceptors:
+    exclude:
+      patterns: /restaurants/login,/customers/login
