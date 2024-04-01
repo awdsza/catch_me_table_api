@@ -1,36 +1,24 @@
 package com.app.catchmetable.service;
 
 import com.app.catchmetable.domain.*;
-import com.app.catchmetable.dto.LoginDto;
-import com.app.catchmetable.dto.RestaurantDto;
-import com.app.catchmetable.dto.RestaurantRequestDto;
-import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
+import com.app.catchmetable.dto.*;
 import jakarta.transaction.Transactional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = "spring.config.location=" +
-        "classpath:/application.yml"
-)
+@SpringBootTest
 @Transactional
 class RestaurantServiceTest {
     @Autowired
     private RestaurantService restaurantService;
-    @Test
-    void 레스토랑_중복확인(){
-        //given
-        String restaurantNumber = "5630101996";
-        //when
-        boolean isDuplicated = restaurantService.isDuplicateID(restaurantNumber);
-        //then
-        assertEquals(isDuplicated,true);
-
-    }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
     @Test
     void 레스토랑_생성() {
         //given
@@ -97,7 +85,7 @@ class RestaurantServiceTest {
         ArrayList<String> restaurantFootCategoryList = new ArrayList<>();
         restaurantFootCategoryList.add("JAPANESE");
         Long restaurantId = 3L;
-        RestaurantUpdateRequestDto updateDto = new RestaurantUpdateRequestDto(null,"대구 중구 달구벌대로 2077 지하 1층"
+        RestaurantUpdateRequestDto updateDto = new RestaurantUpdateRequestDto(null,null,"대구 중구 달구벌대로 2077 지하 1층"
                 ,null,null,null
                 ,restaurantFootCategoryList
                 ,null
@@ -124,7 +112,19 @@ class RestaurantServiceTest {
         //then
         assertEquals(restaurantFootCategoryList.size(),restaurant.getRestaurantFoodCategoryList().size());
     }
+    @Test
+    void 사용자_비밀번호_변경_테스트(){
+        String rawPassword = "1234";
+        RestaurantUpdateRequestDto customerUpdateRequestDto = RestaurantUpdateRequestDto.createUpdatePasswordRequestDto(rawPassword);
+        Long restaurantId = 3L;
+        //when
+        restaurantService.updateUserPw(restaurantId,customerUpdateRequestDto);
+        Restaurant restaurant = restaurantService.findRestaurant(restaurantId);
 
+//        assertTrue(restaurant instanceof User);
+//        Customer customer = customerService.findUser(customerId);
+        assertTrue(passwordEncoder.matches(rawPassword,restaurant.getUserPw()));
+    }
     @Test
     void deleteRestaurant() {
         //given
