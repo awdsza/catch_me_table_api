@@ -1,5 +1,6 @@
 package com.app.catchmetable.domain;
 
+import com.app.catchmetable.dto.CustomerUpdateRequestDto;
 import com.app.catchmetable.dto.RestaurantUpdateRequestDto;
 import com.app.catchmetable.dto.RestaurantRequestDto;
 import com.app.catchmetable.utils.StringUtils;
@@ -9,14 +10,14 @@ import lombok.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-@Entity
-@Getter
-@Table(name = "restaurants")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorValue(value="restaurant")
-@Setter(AccessLevel.PRIVATE)
+@Entity // 해당 객체가 Entity임을 선언.
+@Getter // Getter 자동 생성
+@Table(name = "restaurants") // DB에서 사용할 테이블명 설정
+@NoArgsConstructor(access = AccessLevel.PROTECTED) //기본생성자 자동생성 접근자는 Protected 설정
+@DiscriminatorValue(value="restaurant") // User 엔티티를 상속받은 엔티티의 구분값 설정.
+@Setter(AccessLevel.PRIVATE) // Setter자동 생성. 접근자는 Private
 public class Restaurant extends User{
-    @Column(name="restaurant_number")
+    @Column(name="restaurant_number") // 테이블 칼럼명 설정
     private String restaurantNumber;
     @Column(name="restaurant_name")
     private String restaurantName;
@@ -28,9 +29,13 @@ public class Restaurant extends User{
     private String restaurantIntroduce;
 
     @Column(name="is_close_yn")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // 테이블에서는 EnumType이 없기때문에 해당 어노테이션을 이용하여 매칭. Enum의 문자열을 저장
     private CloseState closeState;
 
+    /** 일대다 매칭 RestaurantFoodCategory엔티티의 restaurant 필드명과 매핑하겠다는 뜻
+     * 레스토랑 엔티티를 불러올때 RestaurantFoodCategory도 불러온다면 RestaurantFoodCategory도 영속상태로 만들어좀.
+     * 해당 엔티티는 고아객체 True 설정. Restaurant가 삭제되면 해당 엔티티도 삭제처리.
+     */
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<RestaurantFoodCategory> restaurantFoodCategoryList = new ArrayList<>();
 
@@ -48,13 +53,10 @@ public class Restaurant extends User{
     private LocalTime closeTime;
 
     @Column(name="has_break_time")
-    @Setter(AccessLevel.PRIVATE)
     private boolean hasBreakTime;
     @Column(name="break_start_time")
-    @Setter(AccessLevel.PRIVATE)
     private LocalTime breakStartTime;
     @Column(name="break_end_time")
-    @Setter(AccessLevel.PRIVATE)
     private LocalTime breakEndTime;
 
     @Column(name="enter_shop_type")
@@ -73,17 +75,13 @@ public class Restaurant extends User{
 
 
     @Column(name="reservation_hour_interval")
-    @Setter(AccessLevel.PRIVATE)
     private int reservationHourInterval;
     @Column(name="reservation_minute_interval")
-    @Setter(AccessLevel.PRIVATE)
     private int reservationMinuteInterval;
 
     @Column(name="wait_am_limit_team")
-    @Setter(AccessLevel.PRIVATE)
     private int waitAmLimitTeam;
     @Column(name="wait_pm_limit_team")
-    @Setter(AccessLevel.PRIVATE)
     private int waitPmLimitTeam;
 
 
@@ -111,9 +109,7 @@ public class Restaurant extends User{
         this.restaurantIntroduce = restaurantIntroduce;
         this.hasBreakTime = hasBreakTime;
         this.foodMinPrice = foodMinPrice;
-        if(foodMaxPrice != null){
-            this.foodMaxPrice = foodMaxPrice;
-        }
+        this.foodMaxPrice = foodMaxPrice;
         this.restaurantLimitPeople = restaurantLimitPeople;
         this.openTime = openTime;
         this.closeTime = closeTime;
@@ -123,81 +119,84 @@ public class Restaurant extends User{
         this.waitReservationMaxLimitPeople = waitReservationMaxLimitPeople;
         this.enterShopType = enterShopType;
     }
-    static public void deleteRestaurant(Restaurant restaurant){
-        restaurant.deleteUser(restaurant);
+    public void deleteRestaurant(){
+        this.deleteUser(this);
     }
 
-    static public void updateRestaurant(Restaurant restaurant, RestaurantUpdateRequestDto dto){
+    public void updateRestaurant(RestaurantUpdateRequestDto dto){
         if(!StringUtils.isBlank(dto.getRestaurantName())){
-            restaurant.setRestaurantName(dto.getRestaurantName());
+            this.setRestaurantName(dto.getRestaurantName());
         }
         if(!StringUtils.isBlank(dto.getRestaurantAddress())){
-            restaurant.setRestaurantAddress(dto.getRestaurantAddress());
+            this.setRestaurantAddress(dto.getRestaurantAddress());
         }
         if(!StringUtils.isBlank(dto.getRestaurantIntroduce())){
-            restaurant.setRestaurantIntroduce(dto.getRestaurantIntroduce());
+            this.setRestaurantIntroduce(dto.getRestaurantIntroduce());
         }
 
         if(!StringUtils.isBlank(dto.getOpenTime())){
-            restaurant.setOpenTime(LocalTime.parse(dto.getOpenTime()));
+            this.setOpenTime(LocalTime.parse(dto.getOpenTime()));
         }
         if(!StringUtils.isBlank(dto.getCloseTime())){
-            restaurant.setCloseTime(LocalTime.parse(dto.getCloseTime()));
+            this.setCloseTime(LocalTime.parse(dto.getCloseTime()));
         }
-        restaurant.setCloseState(dto.getCloseState() == null ? CloseState.N : dto.getCloseState() );
+        this.setCloseState(dto.getCloseState() == null ? CloseState.N : dto.getCloseState() );
         if(dto.getRestaurantFoodCategoryList().size() > 0){
-            List<RestaurantFoodCategory> restaurantFoodCategoryList = restaurant.getRestaurantFoodCategoryList();
+            List<RestaurantFoodCategory> restaurantFoodCategoryList = this.getRestaurantFoodCategoryList();
             restaurantFoodCategoryList.clear();
-            restaurant.addRestaurantFoodCategory(dto.getRestaurantFoodCategoryList());
+            this.addRestaurantFoodCategory(dto.getRestaurantFoodCategoryList());
         }
         if(dto.getFoodMinPrice() != null){
-            restaurant.setFoodMinPrice(dto.getFoodMinPrice());
+            this.setFoodMinPrice(dto.getFoodMinPrice());
         }
         if(dto.getFoodMaxPrice() != null){
-            restaurant.setFoodMaxPrice(dto.getFoodMaxPrice());
+            this.setFoodMaxPrice(dto.getFoodMaxPrice());
         }
         if(dto.getRestaurantLimitPeople() != null){
-            restaurant.setRestaurantLimitPeople(dto.getRestaurantLimitPeople());
+            this.setRestaurantLimitPeople(dto.getRestaurantLimitPeople());
         }
         if(dto.getHasBreakTime() != null){
-            restaurant.setHasBreakTime(dto.getHasBreakTime());
+            this.setHasBreakTime(dto.getHasBreakTime());
         }
         if(!StringUtils.isBlank(dto.getBreakStartTime())){
-            restaurant.setBreakStartTime(LocalTime.parse(dto.getBreakStartTime()));
+            this.setBreakStartTime(LocalTime.parse(dto.getBreakStartTime()));
         }
         if(!StringUtils.isBlank(dto.getBreakEndTime())){
-            restaurant.setBreakEndTime(LocalTime.parse(dto.getBreakEndTime()));
+            this.setBreakEndTime(LocalTime.parse(dto.getBreakEndTime()));
         }
         if(dto.getEnterShopType() != null){
-            restaurant.setEnterShopType(dto.getEnterShopType());
+            this.setEnterShopType(dto.getEnterShopType());
         }
         if(!StringUtils.isBlank(dto.getWaitReservationStartTime())){
-            restaurant.setWaitReservationStartTime(LocalTime.parse(dto.getWaitReservationStartTime()));
+            this.setWaitReservationStartTime(LocalTime.parse(dto.getWaitReservationStartTime()));
         }
         if(!StringUtils.isBlank(dto.getWaitReservationEndTime())){
-            restaurant.setWaitReservationEndTime(LocalTime.parse(dto.getWaitReservationEndTime()));
+            this.setWaitReservationEndTime(LocalTime.parse(dto.getWaitReservationEndTime()));
         }
         if(dto.getWaitReservationMinLimitPeople() != null){
-            restaurant.setWaitReservationMinLimitPeople(dto.getWaitReservationMinLimitPeople());
+            this.setWaitReservationMinLimitPeople(dto.getWaitReservationMinLimitPeople());
         }
         if(dto.getWaitReservationMaxLimitPeople() != null){
-            restaurant.setWaitReservationMaxLimitPeople(dto.getWaitReservationMaxLimitPeople());
+            this.setWaitReservationMaxLimitPeople(dto.getWaitReservationMaxLimitPeople());
         }
 
         if(dto.getReservationMinuteInterval() != null){
-            restaurant.setReservationMinuteInterval(dto.getReservationMinuteInterval());
+            this.setReservationMinuteInterval(dto.getReservationMinuteInterval());
         }
         if(dto.getReservationHourInterval() != null){
-            restaurant.setReservationHourInterval(dto.getReservationHourInterval());
+            this.setReservationHourInterval(dto.getReservationHourInterval());
         }
 
         if(dto.getWaitAmLimitTeam() != null){
-            restaurant.setWaitAmLimitTeam(dto.getWaitAmLimitTeam());
+            this.setWaitAmLimitTeam(dto.getWaitAmLimitTeam());
         }
         if(dto.getWaitPmLimitTeam() != null){
-            restaurant.setWaitPmLimitTeam(dto.getWaitPmLimitTeam());
+            this.setWaitPmLimitTeam(dto.getWaitPmLimitTeam());
         }
 
+    }
+    public void updateRestaurantPassword(String userPw){
+        this.updateUserPw(userPw);
     }
     static public Restaurant createRestaurant(RestaurantRequestDto dto){
 
@@ -211,7 +210,7 @@ public class Restaurant extends User{
         LocalTime waitReservationEndTime = StringUtils.isBlank(waitReservationEndTimeStr) ? closeTime : LocalTime.parse(waitReservationEndTimeStr);
         Boolean hasBreakTime = dto.getHasBreakTime();
 
-        Restaurant restaurant = new Restaurant(dto.getRestaurantNumber(), dto.getUserPW(), dto.getRestaurantName(), dto.getRestaurantAddress(), dto.getRestaurantTelephoneNumber(), dto.getRestaurantIntroduce(),
+        Restaurant restaurant = new Restaurant(dto.getRestaurantNumber(), dto.getUserPw(), dto.getRestaurantName(), dto.getRestaurantAddress(), dto.getRestaurantTelephoneNumber(), dto.getRestaurantIntroduce(),
              dto.getHasBreakTime(), dto.getFoodMinPrice(), dto.getFoodMaxPrice(), dto.getRestaurantLimitPeople(), openTime, closeTime, waitReservationStartTime, waitReservationEndTime,dto.getWaitReservationMinLimitPeople(),dto.getWaitReservationMaxLimitPeople(), shopType);
         if(hasBreakTime && ( !StringUtils.isBlank(dto.getBreakStartTime()) && !StringUtils.isBlank(dto.getBreakEndTime()))){
 

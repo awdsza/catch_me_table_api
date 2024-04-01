@@ -26,7 +26,7 @@ public class RestaurantRequestDto {
     @NotBlank(message="비밀번호는 필수입니다.")
     //@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%*?&])[A-Za-z\\\\d@$!%*?&]{8,}$")
 //    @Length(min = 8, max = 10)
-    private String userPW;
+    private String userPw;
 
     @NotBlank(message = "가게 이름은 필수입니다.")
     private String restaurantName;
@@ -82,5 +82,7 @@ public class RestaurantRequestDto {
     private Integer waitAmLimitTeam;
     private Integer waitPmLimitTeam;
 
-
+    public void changeEncodePw(String encodePw){
+        this.userPw = encodePw;
+    }
 }

@@ -5,10 +5,7 @@ import com.app.catchmetable.domain.EnterShopType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +14,8 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
 public class RestaurantUpdateRequestDto {
+    private String userPw;
+
     private String restaurantName;
     private String restaurantAddress;
     private String restaurantTelephoneNumber;
@@ -24,6 +23,7 @@ public class RestaurantUpdateRequestDto {
 
     private CloseState closeState;
     private List<String> restaurantFoodCategoryList = new ArrayList<>();
+
 
 
     private Integer foodMinPrice;
@@ -66,4 +66,12 @@ public class RestaurantUpdateRequestDto {
 
     private Integer waitAmLimitTeam;
     private Integer waitPmLimitTeam;
+
+
+
+    public static RestaurantUpdateRequestDto createUpdatePasswordRequestDto(String userPw){
+        RestaurantUpdateRequestDto restaurantUpdateRequestDto = new RestaurantUpdateRequestDto();
+        restaurantUpdateRequestDto.userPw = userPw;
+        return restaurantUpdateRequestDto;
+    }
 }
