@@ -25,9 +25,10 @@ public class RestaurantRepository {
     }
 
     public Optional<Restaurant> findByUserName(String userID) {
-        return Optional.of(entityManager.createQuery("SELECT u FROM Restaurant u where u.userId=:userID",Restaurant.class)
-                .setParameter("userID",userID)
-                .getSingleResult());
+        List<Restaurant> restaurantList = entityManager.createQuery("SELECT u FROM Restaurant u where u.userId=:userID", Restaurant.class)
+                .setParameter("userID", userID)
+                .getResultList();
+        return restaurantList.stream().findAny();
     }
 
     public Optional<Restaurant> findRestaurant(Long restaurantId){
